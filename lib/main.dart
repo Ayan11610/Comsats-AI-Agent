@@ -1,4 +1,4 @@
-// Main entry point for COMSATS GPT application
+// Main entry point for COMSATS AI AGENT application
 // This file initializes the app with Riverpod state management and GoRouter navigation
 
 import 'package:flutter/material.dart';

@@ -101,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 8),
                 
                 Text(
-                  'Sign in to continue to COMSATS GPT',
+                  'Sign in to continue to COMSATS AI Agent',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.grey.shade600,
                       ),

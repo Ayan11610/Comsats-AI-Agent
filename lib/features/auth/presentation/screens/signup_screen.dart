@@ -106,7 +106,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(height: 8),
                 
                 Text(
-                  'Sign up to get started with COMSATS GPT',
+                  'Sign up to get started with COMSATS AI Agent',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.grey.shade600,
                       ),

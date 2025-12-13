@@ -1,6 +1,6 @@
 {
-    "name": "comsats_gpt",
-    "short_name": "comsats_gpt",
+    "name": "Comsats_AI_Agent",
+    "short_name": "Comsats_AI_Agent",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

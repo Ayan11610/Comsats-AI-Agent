@@ -299,11 +299,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         title: const Text('Privacy Policy'),
         content: const SingleChildScrollView(
           child: Text(
-            'COMSATS GPT Privacy Policy\n\n'
+            'COMSATS AI Agent Privacy Policy\n\n'
             '1. Data Collection\n'
             'We collect only the information necessary to provide our services.\n\n'
             '2. Data Usage\n'
-            'Your data is used solely to improve your experience with COMSATS GPT.\n\n'
+            'Your data is used solely to improve your experience with COMSATS AI Agent.\n\n'
             '3. Data Security\n'
             'We implement industry-standard security measures to protect your data.\n\n'
             '4. Third-Party Services\n'
@@ -328,9 +328,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         title: const Text('Terms of Service'),
         content: const SingleChildScrollView(
           child: Text(
-            'COMSATS GPT Terms of Service\n\n'
+            'COMSATS AI Agent Terms of Service\n\n'
             '1. Acceptance of Terms\n'
-            'By using COMSATS GPT, you agree to these terms.\n\n'
+            'By using COMSATS AI Agent, you agree to these terms.\n\n'
             '2. Use of Service\n'
             'This service is for academic purposes only.\n\n'
             '3. User Responsibilities\n'

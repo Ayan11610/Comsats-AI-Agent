@@ -70,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
             
             // Subtitle
             Text(
-              'The Official COMSATS AI agent to help students out',
+              'COMSATS AI AGENT\nYour Campus Companion',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Colors.white.withOpacity(0.9),

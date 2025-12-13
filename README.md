@@ -1,4 +1,4 @@
-# comsats_gpt
+# Comsats_AI_Agent
 
 A new Flutter project.
 

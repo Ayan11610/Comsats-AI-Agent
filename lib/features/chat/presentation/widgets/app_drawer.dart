@@ -145,14 +145,14 @@ class AppDrawer extends StatelessWidget {
                 const Divider(height: 1),
                 const SizedBox(height: 12),
                 Text(
-                  'COMSATS GPT v1.0.0',
+                  'COMSATS AI Agent v1.0.0',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Colors.grey.shade600,
                       ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '© 2024 COMSATS University',
+                  '© 2025 COMSATS University',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Colors.grey.shade500,
                         fontSize: 10,
@@ -206,7 +206,7 @@ class AppDrawer extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'How to use COMSATS GPT:',
+                'How to use COMSATS AI Agent:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 12),
@@ -239,14 +239,14 @@ class AppDrawer extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('About COMSATS GPT'),
+        title: const Text('About COMSATS AI Agent'),
         content: const SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'COMSATS GPT is an AI-powered academic assistant designed specifically for COMSATS University students.',
+                'COMSATS AI Agent is an AI-powered academic assistant designed specifically for COMSATS University students.',
               ),
               SizedBox(height: 16),
               Text(
