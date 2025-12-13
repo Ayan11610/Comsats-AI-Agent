@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
             
             // App Title
             Text(
-              'COMSATS GPT',
+              'COMSATS',
               style: Theme.of(context).textTheme.displaySmall?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -70,7 +70,8 @@ class _SplashScreenState extends State<SplashScreen> {
             
             // Subtitle
             Text(
-              'Your AI Academic Assistant',
+              'The Official COMSATS AI agent to help students out',
+              textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Colors.white.withOpacity(0.9),
                     letterSpacing: 0.5,

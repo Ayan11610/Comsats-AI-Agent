@@ -77,7 +77,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           Text(
             'Appearance',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.bold,
                 ),
           )
@@ -132,7 +131,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           Text(
             'Notifications',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.bold,
                 ),
           )
@@ -175,7 +173,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           Text(
             'Account',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.bold,
                 ),
           )
@@ -225,7 +222,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           Text(
             'Data',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.bold,
                 ),
           )
@@ -272,7 +268,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             child: Column(
               children: [
                 Text(
-                  'COMSATS GPT',
+                  'COMSATS',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Colors.grey.shade600,
                       ),

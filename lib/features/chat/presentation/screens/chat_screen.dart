@@ -80,7 +80,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final lowerMessage = userMessage.toLowerCase();
 
     if (lowerMessage.contains('hello') || lowerMessage.contains('hi')) {
-      return '''Hello! I'm COMSATS GPT, your AI academic assistant. How can I help you with your studies today?
+      return '''Hello! I'm COMSATS, your AI academic assistant. How can I help you with your studies today?
 
 I can assist you with:
 - Course concepts and explanations

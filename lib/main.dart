@@ -29,7 +29,7 @@ class MyApp extends ConsumerWidget {
     
     return MaterialApp.router(
       // App title shown in task switcher
-      title: 'COMSATS GPT',
+      title: 'COMSATS',
       
       // Remove debug banner in top-right corner
       debugShowCheckedModeBanner: false,

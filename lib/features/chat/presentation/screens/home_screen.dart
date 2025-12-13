@@ -36,7 +36,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('COMSATS GPT'),
+        title: const Text('COMSATS'),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
