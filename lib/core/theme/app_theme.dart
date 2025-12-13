@@ -30,7 +30,7 @@ class AppTheme {
       onSurface: lightOnSurface,
       primaryContainer: comsatsLightPurple,
       onPrimaryContainer: Colors.white,
-      secondaryContainer: comsatsBlue.withOpacity(0.1),
+      secondaryContainer: comsatsBlue.withValues(alpha: 0.1),
       onSecondaryContainer: comsatsBlue,
       error: const Color(0xFFD32F2F),
       onError: Colors.white,
@@ -91,7 +91,7 @@ class AppTheme {
       bodySmall: GoogleFonts.inter(
         fontSize: 12,
         fontWeight: FontWeight.normal,
-        color: lightOnSurface.withOpacity(0.7),
+        color: lightOnSurface.withValues(alpha: 0.7),
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -197,8 +197,8 @@ class AppTheme {
       onSurface: darkOnSurface,
       primaryContainer: comsatsDarkPurple,
       onPrimaryContainer: Colors.white,
-      secondaryContainer: comsatsBlue.withOpacity(0.2),
-      onSecondaryContainer: comsatsBlue.withOpacity(0.8),
+      secondaryContainer: comsatsBlue.withValues(alpha: 0.2),
+      onSecondaryContainer: comsatsBlue.withValues(alpha: 0.8),
       error: const Color(0xFFEF5350),
       onError: Colors.white,
     ),
@@ -258,7 +258,7 @@ class AppTheme {
       bodySmall: GoogleFonts.inter(
         fontSize: 12,
         fontWeight: FontWeight.normal,
-        color: darkOnSurface.withOpacity(0.7),
+        color: darkOnSurface.withValues(alpha: 0.7),
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(

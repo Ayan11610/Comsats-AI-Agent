@@ -130,6 +130,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               conversation.title,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -142,13 +143,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   lastMessage,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   timeAgo,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey.shade500,
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                         fontSize: 11,
                       ),
                 ),

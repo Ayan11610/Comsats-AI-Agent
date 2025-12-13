@@ -1,5 +1,5 @@
 name: comsats_gpt
-description: "COMSATS GPT - AI Assistant for COMSATS University Students"
+description: "Comsats AI Agent - AI Assistant for COMSATS University Students"
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -46,6 +46,7 @@ dev_dependencies:
   riverpod_generator: ^2.4.0
   build_runner: ^2.4.9
   riverpod_lint: ^2.3.10
+  flutter_launcher_icons: ^0.13.1
 
 flutter:
   uses-material-design: true
@@ -58,3 +59,11 @@ flutter:
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/appicon.jpg"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/appicon.jpg"
+  remove_alpha_ios: true
