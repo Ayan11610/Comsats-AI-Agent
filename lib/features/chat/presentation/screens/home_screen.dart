@@ -6,12 +6,33 @@ import 'package:intl/intl.dart';
 import '../../providers/chat_provider.dart';
 import '../widgets/app_drawer.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final conversations = ref.watch(chatProvider);
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  String _searchQuery = '';
+
+  @override
+  Widget build(BuildContext context) {
+    final allConversations = ref.watch(chatProvider);
+    
+    // Filter conversations based on search query
+    final conversations = _searchQuery.isEmpty
+        ? allConversations
+        : allConversations.where((conversation) {
+            final titleMatch = conversation.title
+                .toLowerCase()
+                .contains(_searchQuery.toLowerCase());
+            final messageMatch = conversation.messages.any((message) =>
+                message.content
+                    .toLowerCase()
+                    .contains(_searchQuery.toLowerCase()));
+            return titleMatch || messageMatch;
+          }).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -20,7 +41,7 @@ class HomeScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
-              // TODO: Implement search
+              _showSearchDialog(context);
             },
           ),
         ],
@@ -301,5 +322,53 @@ class HomeScreen extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  /// Show search dialog to filter conversations
+  void _showSearchDialog(BuildContext context) {
+    final controller = TextEditingController(text: _searchQuery);
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Search Conversations'),
+        content: TextField(
+          controller: controller,
+          decoration: const InputDecoration(
+            hintText: 'Search by title or message content',
+            labelText: 'Search',
+            prefixIcon: Icon(Icons.search),
+          ),
+          autofocus: true,
+          onChanged: (value) {
+            setState(() {
+              _searchQuery = value;
+            });
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              setState(() {
+                _searchQuery = '';
+              });
+              Navigator.pop(context);
+            },
+            child: const Text('Clear'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Done'),
+          ),
+        ],
+      ),
+    ).then((_) {
+      // Update search query when dialog closes
+      if (controller.text != _searchQuery) {
+        setState(() {
+          _searchQuery = controller.text;
+        });
+      }
+    });
   }
 }

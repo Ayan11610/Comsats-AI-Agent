@@ -284,12 +284,16 @@ class _SignupScreenState extends State<SignupScreen> {
                 
                 const SizedBox(height: 24),
                 
-                // Google Sign In Button - Uses Google icon
+                // Google Sign In Button - Uses Google logo image
                 SizedBox(
                   height: 50,
                   child: OutlinedButton.icon(
                     onPressed: _isLoading ? null : _handleGoogleSignIn,
-                    icon: const Icon(Icons.g_mobiledata, size: 28, color: Colors.red),
+                    icon: Image.asset(
+                      'assets/images/google.png',
+                      height: 24,
+                      width: 24,
+                    ),
                     label: const Text('Continue with Google'),
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(color: Colors.grey.shade300, width: 1.5),

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/theme/theme_provider.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
-  bool _isDarkMode = false;
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   bool _notificationsEnabled = true;
   bool _soundEnabled = true;
 
@@ -57,7 +58,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   const SizedBox(height: 16),
                   OutlinedButton.icon(
                     onPressed: () {
-                      // TODO: Implement edit profile
+                      context.push('/edit-profile');
                     },
                     icon: const Icon(Icons.edit),
                     label: const Text('Edit Profile'),
@@ -90,13 +91,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 SwitchListTile(
                   title: const Text('Dark Mode'),
                   subtitle: const Text('Enable dark theme'),
-                  value: _isDarkMode,
+                  value: ref.watch(themeModeProvider) == ThemeMode.dark,
                   onChanged: (value) {
-                    setState(() => _isDarkMode = value);
-                    // TODO: Implement theme switching
+                    ref.read(themeModeProvider.notifier).toggleTheme();
                   },
                   secondary: Icon(
-                    _isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                    ref.watch(themeModeProvider) == ThemeMode.dark
+                        ? Icons.dark_mode
+                        : Icons.light_mode,
                   ),
                 ),
                 const Divider(height: 1),
