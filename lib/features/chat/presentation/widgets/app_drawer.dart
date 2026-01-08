@@ -1,66 +1,146 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../auth/providers/auth_provider.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends ConsumerWidget {
   const AppDrawer({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentUserAsync = ref.watch(currentUserProvider);
     return Drawer(
       child: Column(
         children: [
           // Drawer Header with COMSATS branding
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.fromLTRB(24, 60, 24, 24),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  const Color(0xFF401B5E),
-                  const Color(0xFF401B5E).withOpacity(0.8),
+          currentUserAsync.when(
+            data: (user) => Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(24, 60, 24, 24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    const Color(0xFF401B5E),
+                    const Color(0xFF401B5E).withOpacity(0.8),
+                  ],
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    radius: 35,
+                    backgroundColor: Colors.white,
+                    child: user?.photoURL != null
+                        ? ClipOval(
+                            child: Image.network(
+                              user!.photoURL!,
+                              width: 70,
+                              height: 70,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Image.asset(
+                                'assets/images/COMSATS.png',
+                                width: 50,
+                                height: 50,
+                              ),
+                            ),
+                          )
+                        : Image.asset(
+                            'assets/images/COMSATS.png',
+                            width: 50,
+                            height: 50,
+                          ),
+                  )
+                      .animate()
+                      .fadeIn(duration: 600.ms)
+                      .scale(duration: 600.ms),
+                  const SizedBox(height: 16),
+                  Text(
+                    user?.displayName ?? 'COMSATS Student',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  )
+                      .animate()
+                      .fadeIn(delay: 200.ms, duration: 600.ms)
+                      .slideX(begin: -0.2, end: 0),
+                  const SizedBox(height: 4),
+                  Text(
+                    user?.email ?? 'student@comsats.edu.pk',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.white.withOpacity(0.9),
+                        ),
+                  )
+                      .animate()
+                      .fadeIn(delay: 300.ms, duration: 600.ms)
+                      .slideX(begin: -0.2, end: 0),
                 ],
               ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CircleAvatar(
-                  radius: 35,
-                  backgroundColor: Colors.white,
-                  child: Image.asset(
-                    'assets/images/COMSATS.png',
-                    width: 50,
-                    height: 50,
+            loading: () => Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(24, 60, 24, 24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    const Color(0xFF401B5E),
+                    const Color(0xFF401B5E).withOpacity(0.8),
+                  ],
+                ),
+              ),
+              child: const Center(
+                child: CircularProgressIndicator(color: Colors.white),
+              ),
+            ),
+            error: (error, stack) => Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(24, 60, 24, 24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    const Color(0xFF401B5E),
+                    const Color(0xFF401B5E).withOpacity(0.8),
+                  ],
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    radius: 35,
+                    backgroundColor: Colors.white,
+                    child: Image.asset(
+                      'assets/images/COMSATS.png',
+                      width: 50,
+                      height: 50,
+                    ),
                   ),
-                )
-                    .animate()
-                    .fadeIn(duration: 600.ms)
-                    .scale(duration: 600.ms),
-                const SizedBox(height: 16),
-                Text(
-                  'COMSATS Student',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                )
-                    .animate()
-                    .fadeIn(delay: 200.ms, duration: 600.ms)
-                    .slideX(begin: -0.2, end: 0),
-                const SizedBox(height: 4),
-                Text(
-                  'student@comsats.edu.pk',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.white.withOpacity(0.9),
-                      ),
-                )
-                    .animate()
-                    .fadeIn(delay: 300.ms, duration: 600.ms)
-                    .slideX(begin: -0.2, end: 0),
-              ],
+                  const SizedBox(height: 16),
+                  Text(
+                    'COMSATS Student',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'student@comsats.edu.pk',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.white.withOpacity(0.9),
+                        ),
+                  ),
+                ],
+              ),
             ),
           ),
 
@@ -129,7 +209,7 @@ class AppDrawer extends StatelessWidget {
                   textColor: Colors.red,
                   onTap: () {
                     Navigator.pop(context);
-                    _showLogoutDialog(context);
+                    _showLogoutDialog(context, ref);
                   },
                   delay: 650,
                 ),
@@ -278,24 +358,61 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  void _showLogoutDialog(BuildContext context) {
+  void _showLogoutDialog(BuildContext context, WidgetRef ref) {
+    // Capture the auth notifier before showing the dialog
+    final authNotifier = ref.read(authStateProvider.notifier);
+    
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: const Text('Logout'),
         content: const Text('Are you sure you want to logout?'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              context.go('/login');
+            onPressed: () async {
+              // Close the dialog first
+              Navigator.pop(dialogContext);
+              
+              // Show loading indicator using the dialog context
+              showDialog(
+                context: dialogContext,
+                barrierDismissible: false,
+                builder: (loadingContext) => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+              
+              try {
+                // Sign out using the captured notifier
+                await authNotifier.signOut();
+                
+                // Close loading indicator - use root navigator
+                if (dialogContext.mounted) {
+                  Navigator.of(dialogContext, rootNavigator: true).pop();
+                  // Navigate to login
+                  dialogContext.go('/login');
+                }
+              } catch (e) {
+                // Close loading indicator
+                if (dialogContext.mounted) {
+                  Navigator.of(dialogContext, rootNavigator: true).pop();
+                  // Show error
+                  ScaffoldMessenger.of(dialogContext).showSnackBar(
+                    SnackBar(
+                      content: Text('Logout failed: ${e.toString()}'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
             ),
             child: const Text('Logout'),
           ),

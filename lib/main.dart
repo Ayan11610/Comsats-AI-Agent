@@ -3,13 +3,36 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_provider.dart';
+import 'core/config/firebase_config.dart';
+import 'core/services/gemini_service.dart';
 
 /// Main function - Entry point of the application
 /// Wraps the app with ProviderScope for Riverpod state management
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  try {
+    // Load environment variables
+    await dotenv.load(fileName: '.env');
+    
+    // Initialize Firebase
+    await Firebase.initializeApp(
+      options: FirebaseConfig.currentPlatform,
+    );
+    
+    // Initialize Gemini AI service
+    await GeminiService().initialize();
+    
+    print('✅ Firebase and Gemini AI initialized successfully');
+  } catch (e) {
+    print('❌ Error initializing app: $e');
+  }
+  
   runApp(
     const ProviderScope(
       child: MyApp(),

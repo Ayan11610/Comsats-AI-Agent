@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../providers/auth_provider.dart';
 
-class SignupScreen extends StatefulWidget {
+class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  ConsumerState<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _SignupScreenState extends ConsumerState<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -18,7 +20,6 @@ class _SignupScreenState extends State<SignupScreen> {
   final _confirmPasswordController = TextEditingController();
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
-  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -31,25 +32,19 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future<void> _handleSignup() async {
     if (_formKey.currentState!.validate()) {
-      setState(() => _isLoading = true);
-      
-      // Simulate signup delay
-      await Future.delayed(const Duration(seconds: 2));
-      
-      if (mounted) {
-        setState(() => _isLoading = false);
-        context.go('/home');
-      }
+      await ref.read(authStateProvider.notifier).signUp(
+            email: _emailController.text.trim(),
+            password: _passwordController.text,
+            name: _nameController.text.trim(),
+          );
     }
   }
 
   Future<void> _handleGoogleSignIn() async {
-    setState(() => _isLoading = true);
-    await Future.delayed(const Duration(seconds: 2));
-    if (mounted) {
-      setState(() => _isLoading = false);
-      context.go('/home');
-    }
+    // TODO: Implement Google Sign In
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Google Sign In coming soon!')),
+    );
   }
 
   Future<void> _handleCUOnlineSignIn() async {
@@ -65,6 +60,34 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authStateProvider);
+
+    // Listen to auth state changes
+    ref.listen<AuthState>(authStateProvider, (previous, next) {
+      if (next.errorMessage != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(next.errorMessage!),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      if (next.successMessage != null && next.requiresOTP) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(next.successMessage!),
+            backgroundColor: Colors.green,
+          ),
+        );
+        // Navigate to OTP verification
+        Future.delayed(const Duration(milliseconds: 500), () {
+          if (mounted) {
+            context.go('/verify-otp/${Uri.encodeComponent(_emailController.text.trim())}');
+          }
+        });
+      }
+    });
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -242,8 +265,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 SizedBox(
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: _isLoading ? null : _handleSignup,
-                    child: _isLoading
+                    onPressed: authState.isLoading ? null : _handleSignup,
+                    child: authState.isLoading
                         ? const SizedBox(
                             height: 20,
                             width: 20,
@@ -288,7 +311,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 SizedBox(
                   height: 50,
                   child: OutlinedButton.icon(
-                    onPressed: _isLoading ? null : _handleGoogleSignIn,
+                    onPressed: authState.isLoading ? null : _handleGoogleSignIn,
                     icon: Image.asset(
                       'assets/images/google.png',
                       height: 24,
@@ -310,7 +333,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 SizedBox(
                   height: 50,
                   child: OutlinedButton.icon(
-                    onPressed: _isLoading ? null : _handleCUOnlineSignIn,
+                    onPressed: authState.isLoading ? null : _handleCUOnlineSignIn,
                     icon: const Icon(Icons.school, size: 24),
                     label: const Text('Sign up with CUOnline'),
                     style: OutlinedButton.styleFrom(

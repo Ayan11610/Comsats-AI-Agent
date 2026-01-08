@@ -1,5 +1,8 @@
 # Uncomment this line to define a global platform for your project
-# platform :ios, '13.0'
+platform :ios, '13.0'
+
+# Use CDN source instead of GitHub for better reliability
+source 'https://cdn.cocoapods.org/'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -39,5 +42,27 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
+    
+    # Fix for gRPC-Core module.modulemap issue
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+    end
+  end
+  
+  # Workaround for gRPC-Core missing module.modulemap
+  grpc_core_path = File.join(installer.sandbox.root, 'gRPC-Core')
+  if Dir.exist?(grpc_core_path)
+    modulemap_path = File.join(grpc_core_path, 'include', 'grpc', 'module.modulemap')
+    unless File.exist?(modulemap_path)
+      FileUtils.mkdir_p(File.dirname(modulemap_path))
+      File.write(modulemap_path, <<~MODULEMAP
+        framework module grpc {
+          umbrella header "grpc.h"
+          export *
+          module * { export * }
+        }
+      MODULEMAP
+      )
+    end
   end
 end

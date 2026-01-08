@@ -22,8 +22,13 @@ dependencies:
   # Navigation
   go_router: ^14.0.2
   
-  # Backend
-  supabase_flutter: ^2.5.6
+  # Firebase
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
+  cloud_firestore: ^5.4.4
+  
+  # AI
+  google_generative_ai: ^0.4.6
   
   # Markdown Rendering
   flutter_markdown: ^0.7.3+1
@@ -37,6 +42,9 @@ dependencies:
   shared_preferences: ^2.2.3
   uuid: ^4.4.0
   intl: ^0.19.0
+  flutter_dotenv: ^5.1.0
+  http: ^1.2.0
+  mailer: ^6.1.2
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +62,8 @@ flutter:
   assets:
     - assets/images/
     - assets/animations/
+    - assets/knowledge_base/
+    - .env
 
   # fonts:
   #   - family: Schyler

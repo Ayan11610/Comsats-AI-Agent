@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../providers/auth_provider.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
-  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -26,25 +27,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _handleLogin() async {
     if (_formKey.currentState!.validate()) {
-      setState(() => _isLoading = true);
-      
-      // Simulate login delay
-      await Future.delayed(const Duration(seconds: 2));
-      
-      if (mounted) {
-        setState(() => _isLoading = false);
-        context.go('/home');
-      }
+      await ref.read(authStateProvider.notifier).signIn(
+            email: _emailController.text.trim(),
+            password: _passwordController.text,
+          );
     }
   }
 
   Future<void> _handleGoogleSignIn() async {
-    setState(() => _isLoading = true);
-    await Future.delayed(const Duration(seconds: 2));
-    if (mounted) {
-      setState(() => _isLoading = false);
-      context.go('/home');
-    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Google Sign In coming soon!')),
+    );
   }
 
   Future<void> _handleCUOnlineSignIn() async {
@@ -60,6 +53,34 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authStateProvider);
+
+    // Listen to auth state changes
+    ref.listen<AuthState>(authStateProvider, (previous, next) {
+      if (next.errorMessage != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(next.errorMessage!),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      if (next.successMessage != null && next.user != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(next.successMessage!),
+            backgroundColor: Colors.green,
+          ),
+        );
+        // Navigate to home
+        Future.delayed(const Duration(milliseconds: 500), () {
+          if (mounted) {
+            context.go('/home');
+          }
+        });
+      }
+    });
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -178,8 +199,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: _isLoading ? null : _handleLogin,
-                    child: _isLoading
+                    onPressed: authState.isLoading ? null : _handleLogin,
+                    child: authState.isLoading
                         ? const SizedBox(
                             height: 20,
                             width: 20,
@@ -224,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 50,
                   child: OutlinedButton.icon(
-                    onPressed: _isLoading ? null : _handleGoogleSignIn,
+                    onPressed: authState.isLoading ? null : _handleGoogleSignIn,
                     icon: Image.asset(
                       'assets/images/google.png',
                       height: 24,
@@ -246,7 +267,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 50,
                   child: OutlinedButton.icon(
-                    onPressed: _isLoading ? null : _handleCUOnlineSignIn,
+                    onPressed: authState.isLoading ? null : _handleCUOnlineSignIn,
                     icon: const Icon(Icons.school, size: 24),
                     label: const Text('Sign in with CUOnline'),
                     style: OutlinedButton.styleFrom(

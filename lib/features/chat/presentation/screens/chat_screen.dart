@@ -47,127 +47,20 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final message = _messageController.text.trim();
     if (message.isEmpty) return;
 
-    // Add user message
-    ref.read(chatProvider.notifier).addMessage(
-          widget.conversationId,
-          message,
-          true,
-        );
-
     _messageController.clear();
-    _scrollToBottom();
-
+    
     // Show typing indicator
     setState(() => _isTyping = true);
+    _scrollToBottom();
 
-    // Simulate AI response delay
-    await Future.delayed(const Duration(seconds: 2));
-
-    // Add AI response
-    final aiResponse = _generateDummyResponse(message);
-    ref.read(chatProvider.notifier).addMessage(
+    // Send message and get AI response
+    await ref.read(chatProvider.notifier).sendMessage(
           widget.conversationId,
-          aiResponse,
-          false,
+          message,
         );
 
     setState(() => _isTyping = false);
     _scrollToBottom();
-  }
-
-  String _generateDummyResponse(String userMessage) {
-    // Simple dummy responses based on keywords
-    final lowerMessage = userMessage.toLowerCase();
-
-    if (lowerMessage.contains('hello') || lowerMessage.contains('hi')) {
-      return '''Hello! I'm COMSATS, your AI academic assistant. How can I help you with your studies today?
-
-I can assist you with:
-- Course concepts and explanations
-- Assignment help
-- Exam preparation
-- University policies
-- Programming questions
-
-What would you like to know?''';
-    }
-
-    if (lowerMessage.contains('data structure') || lowerMessage.contains('dsa')) {
-      return '''# Data Structures
-
-I can help you with various data structures topics! Here are some common ones:
-
-## Linear Data Structures:
-- **Arrays**: Fixed-size sequential collection
-- **Linked Lists**: Dynamic size, node-based
-- **Stacks**: LIFO (Last In First Out)
-- **Queues**: FIFO (First In First Out)
-
-## Non-Linear Data Structures:
-- **Trees**: Hierarchical structure
-- **Graphs**: Network of nodes and edges
-- **Hash Tables**: Key-value pairs
-
-## Example: Stack Implementation
-```cpp
-class Stack {
-    int top;
-    int arr[MAX];
-public:
-    Stack() { top = -1; }
-    void push(int x);
-    int pop();
-    bool isEmpty();
-};
-```
-
-Which specific data structure would you like to learn about?''';
-    }
-
-    if (lowerMessage.contains('database') || lowerMessage.contains('sql')) {
-      return '''# Database Management
-
-I can help you with database concepts! Here are key topics:
-
-## SQL Basics:
-- **SELECT**: Retrieve data
-- **INSERT**: Add new records
-- **UPDATE**: Modify existing data
-- **DELETE**: Remove records
-
-## Example Query:
-```sql
-SELECT student_name, gpa 
-FROM students 
-WHERE department = 'CS' 
-ORDER BY gpa DESC;
-```
-
-## Normalization:
-- 1NF, 2NF, 3NF, BCNF
-- Reduces redundancy
-- Improves data integrity
-
-What specific database topic do you need help with?''';
-    }
-
-    // Default response
-    return '''I understand you're asking about: "$userMessage"
-
-While I have access to COMSATS-specific knowledge, I can provide general academic assistance on this topic. 
-
-**Here's what I can help with:**
-- Explain concepts in detail
-- Provide code examples
-- Suggest study resources
-- Answer specific questions
-
-Could you please provide more details about what you'd like to know? For example:
-- Which course is this for?
-- What specific aspect are you struggling with?
-- Do you need theoretical explanation or practical examples?
-
-I'm here to help! ''';
   }
 
   @override
