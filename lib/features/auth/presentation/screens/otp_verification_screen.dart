@@ -52,16 +52,20 @@ class _OTPVerificationScreenState extends ConsumerState<OTPVerificationScreen> {
             backgroundColor: Colors.red,
           ),
         );
+        // Clear error message after showing
+        ref.read(authStateProvider.notifier).clearMessages();
       }
-      if (next.successMessage != null && !next.requiresOTP) {
+      if (next.successMessage != null && !next.requiresOTP && next.user != null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(next.successMessage!),
             backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
           ),
         );
-        // Navigate to home after successful verification
-        Future.delayed(const Duration(seconds: 1), () {
+        // Clear messages and navigate to home after successful verification
+        ref.read(authStateProvider.notifier).clearMessages();
+        Future.delayed(const Duration(milliseconds: 500), () {
           if (mounted) {
             context.go('/home');
           }
@@ -73,8 +77,11 @@ class _OTPVerificationScreenState extends ConsumerState<OTPVerificationScreen> {
           SnackBar(
             content: Text(next.successMessage!),
             backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
           ),
         );
+        // Clear messages after showing
+        ref.read(authStateProvider.notifier).clearMessages();
       }
     });
 

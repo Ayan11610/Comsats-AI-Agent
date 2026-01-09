@@ -3,6 +3,9 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'email_service_interface.dart';
 
+/// Factory function to create platform-specific email service
+EmailServiceInterface createEmailService() => EmailServiceMobile();
+
 /// Mobile implementation of email service using SMTP
 class EmailServiceMobile implements EmailServiceInterface {
   final String _mailHost = dotenv.env['MAIL_HOST'] ?? 'smtp.gmail.com';
@@ -28,15 +31,8 @@ class EmailServiceMobile implements EmailServiceInterface {
 
       final emailBody = _getOTPEmailBody(userName, otp);
 
-      // Configure SMTP server
-      final smtpServer = SmtpServer(
-        _mailHost,
-        port: int.parse(_mailPort),
-        username: _mailUsername,
-        password: _mailPassword,
-        ssl: false,
-        allowInsecure: true,
-      );
+      // Configure SMTP server with TLS
+      final smtpServer = gmail(_mailUsername, _mailPassword);
 
       // Create the email message
       final message = Message()
@@ -73,15 +69,8 @@ class EmailServiceMobile implements EmailServiceInterface {
 
       final emailBody = _getWelcomeEmailBody(userName);
 
-      // Configure SMTP server
-      final smtpServer = SmtpServer(
-        _mailHost,
-        port: int.parse(_mailPort),
-        username: _mailUsername,
-        password: _mailPassword,
-        ssl: false,
-        allowInsecure: true,
-      );
+      // Configure SMTP server with TLS
+      final smtpServer = gmail(_mailUsername, _mailPassword);
 
       // Create the email message
       final message = Message()

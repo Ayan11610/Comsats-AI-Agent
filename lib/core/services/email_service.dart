@@ -1,6 +1,7 @@
 import 'email_service_interface.dart';
 // Conditional imports for platform-specific implementations
-import 'email_service_mobile.dart' if (dart.library.html) 'email_service_web.dart';
+import 'email_service_mobile.dart'
+    if (dart.library.html) 'email_service_web.dart' as platform;
 
 /// Service for sending emails (OTP verification)
 /// Automatically uses the correct implementation based on platform:
@@ -12,13 +13,7 @@ class EmailService implements EmailServiceInterface {
   EmailService._internal();
 
   // Platform-specific implementation
-  final EmailServiceInterface _implementation = _createImplementation();
-
-  static EmailServiceInterface _createImplementation() {
-    // This will automatically use EmailServiceMobile on mobile/desktop
-    // and EmailServiceWeb on web platforms
-    return EmailServiceMobile();
-  }
+  final EmailServiceInterface _implementation = platform.createEmailService();
 
   @override
   Future<bool> sendOTPEmail({

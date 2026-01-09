@@ -3,6 +3,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'email_service_interface.dart';
 
+/// Factory function to create platform-specific email service
+EmailServiceInterface createEmailService() => EmailServiceWeb();
+
 /// Web implementation of email service using HTTP API
 class EmailServiceWeb implements EmailServiceInterface {
   final String _mailUsername = dotenv.env['MAIL_USERNAME'] ?? '';
